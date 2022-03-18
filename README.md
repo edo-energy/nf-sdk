@@ -10,3 +10,9 @@ To use, first `docker login` using the API key you received.  After
 this, you should be able to run `docker-compose up` and then visit
 http://localhost:8080/ to visit the NF console.
 
+
+## Deployment
+
+```shell
+balena deploy easand/development --registry-secrets=credentials.yml
+```
