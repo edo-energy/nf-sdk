@@ -20,6 +20,11 @@
 #   which interface to use in its environment.
 
 version: "2.2"
+
+volumes:
+  edo-db:
+  edo-logs:
+
 services:
 
   # this is the load balancer through which you access all APIs and the console.
@@ -162,6 +167,18 @@ services:
     networks:
       - internal
 
+  edo-service:
+    image: mcktechsolutions.azurecr.io/devicecontrol:latest
+    env_file: .env.1.1
+    networks:
+      - internal
+    environment:
+      - NORMAL_HOST=http://envoy:8080
+    depends_on:
+      - envoy
+    volumes:
+      - "edo-db:/.db"
+      - "edo-logs:/logs"
 
 networks:
   # the services all talk on this network which is only exposed through envoy

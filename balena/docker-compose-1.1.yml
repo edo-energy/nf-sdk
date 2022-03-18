@@ -9,6 +9,8 @@ volumes:
   service-config:
   tailscale:
   tailscale-certs:
+  edo-db:
+  edo-logs:
 
 services:
   redis:
@@ -188,7 +190,19 @@ services:
       - REDIS_ADDRESS=redis:6379
       - POINT_SERVICE_ADDRESS=point-service:9090
       - BACNET_SERVICE_ADDRESS=10.114.104.1:9090
-      - COMMAND_LOG_DIR=/command     
+      - COMMAND_LOG_DIR=/command  
+
+  edo-service:
+    image: mcktechsolutions.azurecr.io/devicecontrol:latest
+    networks:
+      - internal
+    environment:
+      - NORMAL_HOST=http://envoy:8080
+    depends_on:
+      - command-service
+    volumes:
+      - "edo-db:/.db"
+      - "edo-logs:/logs"
 
 networks:
   # the services all talk on this network which is only exposed through envoy
