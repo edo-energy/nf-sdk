@@ -10,6 +10,8 @@ volumes:
   tailscale:
   tailscale-certs:
   templates:
+  edo-db2:
+  edo-logs:
 
 services:
   redis:
@@ -206,7 +208,28 @@ services:
       - REDIS_ADDRESS=redis:6379
       - POINT_SERVICE_ADDRESS=point-service:9090
       - TEMPLATE_DIR=/templates
-      
+
+  edo-service:
+    image: mcktechsolutions.azurecr.io/devicecontrol:latest
+    networks:
+      - internal
+    environment:
+      - NORMAL_HOST=http://envoy:8080
+    depends_on:
+      - envoy
+    volumes:
+      - "edo-db2:/.db"
+      - "edo-logs:/logs"
+
+  promtail:
+    image: mcktechsolutions.azurecr.io/devicepromtail:latest
+    environment:
+      - DEVICE_ID="South Landing"
+    volumes:
+      - edo-logs:/var/log/apps/edo-service
+    networks:
+      - internal
+
 networks:
   # the services all talk on this network which is only exposed through envoy
   internal:

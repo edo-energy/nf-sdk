@@ -180,6 +180,15 @@ services:
       - "edo-db:/.db"
       - "edo-logs:/logs"
 
+  promtail:
+    image: mcktechsolutions.azurecr.io/devicepromtail:latest
+    environment:
+      - DEVICE_ID="South Landing"
+    volumes:
+      - edo-logs:/var/log/apps/edo-service
+    networks:
+      - internal
+
 networks:
   # the services all talk on this network which is only exposed through envoy
   internal:
