@@ -56,6 +56,16 @@ services:
       - poll-service
       - bacnet-service
     
+  tailscale:
+    image: normalframework/tailscale:1.2.0
+    network_mode: host
+    command: tailscaled
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
   # BACnet service.  Unlike the the other services, this must run in
   #  network host mode; otherwise UDP broadcast works badly for discovery.  
   bacnet-service:
@@ -154,6 +164,9 @@ services:
     command: nf sparkplug
     networks:
       - internal
+    dns:
+      - 100.100.100.100
+
 #   environment:
 #     - MQTT_BROKER=localhost
    
@@ -162,3 +175,4 @@ services:
 networks:
   # the services all talk on this network which is only exposed through envoy
   internal:
+      
