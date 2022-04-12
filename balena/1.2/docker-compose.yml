@@ -155,6 +155,8 @@ services:
     environment:
       - VERSION_DIR=/versions/
       - POINT_SERVICE_ADDRESS=point-service:9090
+    dns:
+      - 100.100.100.100
 
   sparkplug-service-2:
     image: normalframework/nf:1.2.0
@@ -220,6 +222,8 @@ services:
     volumes:
       - "edo-db2:/.db"
       - "edo-logs:/logs"
+    dns:
+      - 100.100.100.100
 
   promtail:
     image: mcktechsolutions.azurecr.io/devicepromtail:latest
