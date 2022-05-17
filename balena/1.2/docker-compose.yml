@@ -15,7 +15,7 @@ volumes:
 
 services:
   redis:
-    image: normalframework/redis:1.2.1
+    image: normalframework/redis:1.2.2
     ports:
       - "6379:6379"
     volumes:
@@ -24,19 +24,19 @@ services:
       - internal
 
   envoy:
-    image: normalframework/envoy:1.2.1
+    image: normalframework/envoy:1.2.2
     networks:
       - internal
     ports:
       - "80:8080"
       - "443:4443"
     environment:
-      - BACNET_SERVICE_HOST=10.114.104.1
+      - BACNET_SERVICE_ADDRESS=10.114.104.1:9090
     volumes:
       - "tailscale-certs:/tailscale-certs"
 
   tailscale:
-    image: normalframework/tailscale:1.2.1
+    image: normalframework/tailscale:1.2.2
     network_mode: host
     command: tailscaled
     devices:
@@ -49,16 +49,16 @@ services:
       - NET_RAW
 
   admin-static:
-    image: normalframework/nf-console:1.2.1
+    image: normalframework/nf-console:1.2.2
     networks:
       - internal
     depends_on:
       - redis
     environment:
-      - BACNET_SERVICE_HOST=10.114.104.1
+      - BACNET_SERVICE_ADDRESS=10.114.104.1:9090
 
   bacnet-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf bacnet-hpl /etc/bacnet/config.pbjson
     network_mode: host
     volumes:
@@ -74,7 +74,7 @@ services:
       - POINT_SERVICE_ADDRESS=point-service:9090
 
   bacnet-status-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf hpl-status
     networks:
       - internal
@@ -90,7 +90,7 @@ services:
       - POINT_SERVICE_ADDRESS=point-service:9090
 
   scan-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf bacnet-scan
     networks:
       - internal
@@ -106,7 +106,7 @@ services:
       - POINT_SERVICE_ADDRESS=point-service:9090
 
   poll-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf bacnet-poll 
     networks:
       - internal
@@ -121,7 +121,7 @@ services:
       - POINT_SERVICE_ADDRESS=point-service:9090
 
   point-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf point
     networks:
       - internal
@@ -144,7 +144,7 @@ services:
 
 
   sparkplug-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf sparkplug
     networks:
       - internal
@@ -159,7 +159,7 @@ services:
       - 100.100.100.100
 
   sparkplug-service-2:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf sparkplug
     networks:
       - internal
@@ -172,13 +172,13 @@ services:
       - POINT_SERVICE_ADDRESS=point-service:9090
 
   platform-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf platform
     networks:
       - internal
  
   command-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf command
     networks:
       - internal
@@ -196,7 +196,7 @@ services:
       - COMMAND_LOG_DIR=/command     
 
   template-service:
-    image: normalframework/nf:1.2.1
+    image: normalframework/nf:1.2.2
     command: nf template
     networks:
       - internal
