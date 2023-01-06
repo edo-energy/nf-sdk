@@ -719,7 +719,16 @@ class CsvSubCommand(Subcommand):
         writer.writeheader()
         for p in self.getlist(args):
             writer.writerow(p)
-        
+
+class DeleteModbusProfile(Subcommand):
+    name = "delete-modbus-profile"
+    def add_arguments(self, parser):
+        parser.add_argument("profile_uuid", metavar="profile_uuid", nargs=1, default="",
+                            help="delete a profile")
+
+    def run(self, args):
+        self.delete("/api/v1/modbus/profiles", {"uuid": args.profile_uuid[0]})
+    
 
 class GetModbusProfiles(CsvSubCommand):
     fieldnames= ["profileName", "uuid", "endianness", "highWordFirst"]
@@ -839,7 +848,7 @@ class DeleteModbusConnection(Subcommand):
                             help="delete a connection")
 
     def run(self, args):
-        self.delete("/api/v1/modbus/connections", {"connection_uuid": args.connection_uuid[0]})
+        self.delete("/api/v1/modbus/connections", {"uuid": args.connection_uuid[0]})
 
 class CreateModbusConnection(Subcommand):
     name = "create-modbus-connection"
@@ -904,15 +913,12 @@ class WatchDataCommand(Subcommand):
             req = urllib.request.Request(self.base + "/api/v1/point/updates/data?wait=1&version=" + version)
             # we get a streaming reply.  we need to fish the objects out
             # of the stream so we can print them.
-            last_version = ""
             with urllib.request.urlopen(req) as response:
                 # use our iterator reader to read the response objects
                 try:
                     for o in self.read_objects(response):
-                        if o["version"] == last_version:
+                        if o["version"] == version:
                             continue
-                        else:
-                            last_version = o["version"]
                         val = o["value"]
                         ts = val.pop("ts")
                         value = val.pop(list(val.keys())[0])
@@ -1504,6 +1510,7 @@ if __name__ == '__main__':
         UpdateObjectCommand,
         GetModbusProfiles,
         CreateModbusProfile,
+        DeleteModbusProfile,
         GetModbusConnections,
         DeleteModbusConnection,
         CreateModbusConnection,
