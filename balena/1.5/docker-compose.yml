@@ -25,13 +25,15 @@ services:
       - redis
     volumes:
       -  nf-var:/var
+    dns:
+      - 100.100.100.100
 
   edo-service:
     image: mcktechsolutions.azurecr.io/devicecontrol:latest
     networks:
       - internal
     environment:
-      - NORMAL_HOST=http://localhost:8080
+      - NORMAL_HOST=http://localhost:80
       - REDIS_HOST=redis
     depends_on:
       - nf
@@ -39,6 +41,8 @@ services:
     volumes:
       - "edo-db:/.db"
       - "edo-logs:/logs"
+    dns:
+      - 100.100.100.100
 
   promtail:
     image: mcktechsolutions.azurecr.io/devicepromtail:latest
