@@ -10,7 +10,7 @@ volumes:
 
 services:
   redis:
-    image: normalframework.azurecr.io/normalframework/redis:1.5
+    image: normalframework.azurecr.io/normalframework/redis:1.5.13
     networks:
       - internal
     ports:
@@ -19,7 +19,7 @@ services:
       - redis-db:/data
 
   nf:
-    image: normalframework.azurecr.io/normalframework/nf-full:1.5
+    image: normalframework.azurecr.io/normalframework/nf-full:1.5.13
     network_mode: host
     environment:
       - PORT=80
@@ -58,7 +58,7 @@ services:
       - internal
 
   tailscale:
-    image: normalframework.azurecr.io/normalframework/tailscale:1.5
+    image: normalframework.azurecr.io/normalframework/tailscale:1.5.13
     network_mode: host
     command: tailscaled
     devices:
