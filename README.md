@@ -14,6 +14,6 @@ http://localhost:8080/ to visit the NF console.
 ## Deployment
 
 ```shell
-balena deploy easand/development --registry-secrets=credentials.yml
+balena deploy edo/development --registry-secrets=credentials.yml
 tailscale up --accept-routes --advertise-tags=tag:device
 ```
