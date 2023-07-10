@@ -7,6 +7,7 @@ volumes:
   nf-var:
   edo-db:
   edo-logs:
+  edo-work:
 
 services:
   redis:
@@ -45,6 +46,7 @@ services:
     volumes:
       - "edo-db:/.db"
       - "edo-logs:/logs"
+      - "edo-work:/work"
     dns:
       - 100.100.100.100
 
