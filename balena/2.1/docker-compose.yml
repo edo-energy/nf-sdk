@@ -20,7 +20,7 @@ services:
       - redis-db:/data
 
   nf:
-    image: normalframework.azurecr.io/normalframework/nf-full:2.1
+    image: normalframework.azurecr.io/normalframework/nf-full:2.1.4-1
     network_mode: host
     environment:
       - PORT=80
@@ -60,7 +60,7 @@ services:
       - internal
 
   tailscale:
-    image: tailscale/tailscale
+    image: tailscale/tailscale:v1.46
     network_mode: host
     command: tailscaled
     devices:
