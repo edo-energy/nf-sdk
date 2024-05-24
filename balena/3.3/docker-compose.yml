@@ -60,7 +60,7 @@ services:
       - internal
 
   tailscale:
-    image: tailscale/tailscale:latest
+    build: ./tailscale
     network_mode: host
     command: tailscaled
     devices:
@@ -70,7 +70,7 @@ services:
       - "tailscale-certs:/tailscale-certs"
     cap_add:
       - NET_ADMIN
-      - NET_RAW
+      - SYS_MODULE
 
 networks:
   internal:
