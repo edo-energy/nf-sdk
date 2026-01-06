@@ -11,7 +11,7 @@ volumes:
 
 services:
   redis:
-    image: normalframework.azurecr.io/normalframework/redis:3.9.6-11
+    image: normalframework.azurecr.io/normalframework/redis:3.9.7-12
     networks:
       - internal
     ports:
@@ -20,7 +20,7 @@ services:
       - redis-db:/data
 
   nf:
-    image: normalframework.azurecr.io/normalframework/nf-full:3.9.6-11
+    image: normalframework.azurecr.io/normalframework/nf-full:3.9.7-12
     network_mode: host
     environment:
       - PORT=80
@@ -30,7 +30,7 @@ services:
     depends_on:
       - redis
     volumes:
-      -  nf-var:/var
+      -  nf-var:/var/nf
     dns:
       - 100.100.100.100
 
