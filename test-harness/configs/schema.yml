@@ -1,0 +1,104 @@
+# Building Simulation Configuration Schema
+# This file documents the YAML schema for configuring the simulated building.
+# See default.yml and large-building.yml for examples.
+
+# Top-level keys:
+#   building: Building metadata
+#   weather: Weather/outdoor conditions configuration
+#   time: Time acceleration settings
+#   zones: List of thermal zones
+#   equipment: Equipment definitions grouped by type
+#   plant: Plant-level equipment (chillers, boilers)
+
+# --- building ---
+# building:
+#   name: string              # Human-readable building name
+#   location: string          # City/location for weather data
+#
+# --- weather ---
+# weather:
+#   mode: "fixed" | "tmy3"   # Fixed conditions or TMY3 file
+#   fixed:                    # Used when mode=fixed
+#     outdoor_air_temp: float # Outdoor air temp (°F)
+#     humidity: float         # Relative humidity (0-100%)
+#     wind_speed: float       # Wind speed (mph)
+#   tmy3_file: string         # Path to TMY3 CSV file (when mode=tmy3)
+#
+# --- time ---
+# time:
+#   acceleration: int         # Time acceleration factor (1-20, default 1)
+#   start_time: string        # Simulation start time (ISO 8601), default: now
+#
+# --- zones ---
+# zones:
+#   - name: string            # Zone name (e.g., "Floor 1 East")
+#     area_sqft: float        # Zone floor area in sq ft
+#     volume_cuft: float      # Zone volume in cu ft
+#     r_value: float          # Thermal resistance (°F·hr·ft²/BTU), default 15
+#     capacitance: float      # Thermal mass (BTU/°F), default: derived from volume
+#     initial_temp: float     # Starting zone temp (°F), default 72
+#     setpoint_cooling: float # Default cooling setpoint (°F), default 74
+#     setpoint_heating: float # Default heating setpoint (°F), default 70
+#     internal_load_btu: float # Internal heat gains (BTU/hr), default 0
+#     occupancy_schedule: string # Cron-like or "always" / "business_hours"
+#
+# --- equipment ---
+# equipment:
+#   ahus:
+#     - name: string
+#       device_id: int              # BACnet device instance (unique)
+#       supply_fan_hp: float        # Supply fan horsepower
+#       max_airflow_cfm: float      # Maximum supply airflow
+#       cooling_capacity_tons: float # Cooling coil capacity
+#       heating_capacity_mbh: float  # Heating coil capacity (MBH)
+#       serves_zones: [string]       # List of zone names this AHU serves
+#       economizer: bool             # Has OA economizer, default true
+#
+#   vavs:
+#     - name: string
+#       device_id: int
+#       zone: string                 # Zone name this VAV serves
+#       max_airflow_cfm: float       # Max airflow
+#       min_airflow_cfm: float       # Min airflow (ventilation minimum)
+#       has_reheat: bool             # Has hot water reheat coil, default true
+#       reheat_capacity_mbh: float   # Reheat coil capacity
+#       parent_ahu: string           # Name of parent AHU
+#
+#   chillers:
+#     - name: string
+#       device_id: int
+#       capacity_tons: float         # Nominal capacity
+#       min_plr: float               # Minimum part load ratio (0-1)
+#       design_lwt: float            # Design leaving water temp (°F)
+#       design_ewt: float            # Design entering water temp (°F)
+#       condenser_type: "air" | "water"  # Condenser type
+#
+#   boilers:
+#     - name: string
+#       device_id: int
+#       capacity_mbh: float          # Capacity in MBH
+#       design_lwt: float            # Design leaving water temp (°F)
+#       efficiency: float            # Combustion efficiency (0-1)
+#       fuel_type: "gas" | "electric"
+#
+#   fcus:
+#     - name: string
+#       device_id: int
+#       zone: string                 # Zone this FCU serves
+#       capacity_cooling_mbh: float  # Cooling capacity
+#       capacity_heating_mbh: float  # Heating capacity
+#       fan_speeds: int              # Number of fan speeds (1-3)
+#
+#   lighting:
+#     - name: string
+#       device_id: int
+#       zone: string
+#       max_watts: float             # Maximum power draw
+#       dimmable: bool               # Supports dimming
+#       occupancy_sensor: bool       # Has occupancy sensor
+#
+#   sensors:
+#     - name: string
+#       device_id: int
+#       type: "oat" | "humidity" | "co2" | "power_meter" | "pressure"
+#       location: string             # Description of sensor location

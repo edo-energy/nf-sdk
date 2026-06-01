@@ -1,0 +1,129 @@
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: #1a1a2e;
+  background-color: #0f0f23;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { padding: 1rem; }
+
+h1 { font-size: 1.4rem; color: #e0e0e0; margin-bottom: 1rem; }
+h2 { font-size: 1.1rem; color: #a0a0c0; margin: 0.5rem 0; }
+
+.app { max-width: 1600px; margin: 0 auto; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.clock {
+  background: #1a1a3e;
+  border: 1px solid #333366;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.clock-item {
+  text-align: center;
+}
+
+.clock-item .label { font-size: 0.7rem; color: #8080a0; text-transform: uppercase; }
+.clock-item .value { font-size: 1.1rem; color: #00ff88; font-family: monospace; }
+.clock-item .value.paused { color: #ff6666; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #1a1a3e;
+  border: 1px solid #2a2a5e;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.card h3 {
+  font-size: 0.9rem;
+  color: #c0c0e0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #2a2a5e;
+  padding-bottom: 0.3rem;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+  font-size: 0.8rem;
+}
+
+.metric .name { color: #8080b0; }
+.metric .val { color: #e0e0ff; font-family: monospace; }
+.metric .val.warm { color: #ff8844; }
+.metric .val.cool { color: #4488ff; }
+.metric .val.ok { color: #44ff88; }
+
+.fault-panel {
+  background: #2a1a1a;
+  border: 1px solid #5e2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.fault-panel h2 { color: #ff8888; }
+
+.fault-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+  font-size: 0.8rem;
+}
+
+.fault-row select, .fault-row input {
+  background: #1a1a2e;
+  border: 1px solid #5e2a2a;
+  color: #e0e0ff;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.fault-row button {
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+button.inject { background: #cc3333; color: white; }
+button.inject:hover { background: #ee4444; }
+button.clear { background: #336633; color: white; }
+button.clear:hover { background: #448844; }
+
+.active-faults {
+  margin-top: 0.5rem;
+}
+
+.active-fault {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #3a1a1a;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  margin: 0.25rem 0;
+  font-size: 0.75rem;
+  color: #ffaaaa;
+}

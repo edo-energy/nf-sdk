@@ -1,0 +1,162 @@
+volumes:
+  redis-db:
+  nf-var:
+  edo-db:
+  edo-logs:
+  edo-work:
+  faketime:
+  building-config:
+  tailscale-state:
+
+services:
+  # --- Time Controller ---
+  time-controller:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.time-controller
+    ports:
+      - "8200:8200"
+    volumes:
+      - faketime:/faketime
+    environment:
+      - TIME_ACCELERATION=${TIME_ACCELERATION:-1}
+      - FAKETIME_DIR=/faketime
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8200/api/time')"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # --- Redis ---
+  redis:
+    image: normalframework.azurecr.io/normalframework/redis:3.10.4-3
+    networks:
+      - internal
+    ports:
+      - "6379:6379"
+      - "8080:8080"
+    volumes:
+      - redis-db:/data
+
+  # --- NF Gateway (with libfaketime) ---
+  nf:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.nf
+    network_mode: "service:redis"
+    environment:
+      - PORT=8080
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+    depends_on:
+      redis:
+        condition: service_started
+    volumes:
+      - nf-var:/var/nf
+
+  # --- edo-service (with libfaketime) ---
+  edo-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.edo
+    networks:
+      - internal
+    environment:
+      - NORMAL_HOST=http://nf:8080
+      - REDIS_HOST=redis
+      - FAKETIME_TIMESTAMP_FILE=/faketime/offset
+      - FAKETIME_NO_CACHE=1
+    depends_on:
+      nf:
+        condition: service_started
+      redis:
+        condition: service_started
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - "edo-db:/.db"
+      - "edo-logs:/logs"
+      - "edo-work:/work"
+      - faketime:/faketime:ro
+
+  # --- Thermal Simulation Engine + BACnet Simulator ---
+  simulator:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.simulator
+    ports:
+      - "8100:8100"
+      - "47808:47808/udp"
+    networks:
+      - internal
+    environment:
+      - BUILDING_CONFIG=/config/building.yml
+      - THERMAL_ENGINE_URL=http://localhost:8100
+      - BACNET_PORT=47808
+    volumes:
+      - ./configs/${BUILDING_CONFIG_FILE:-default.yml}:/config/building.yml:ro
+    depends_on:
+      time-controller:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8100/api/state')"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # --- Configuration UI ---
+  config-ui:
+    build:
+      context: ./config-ui
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    environment:
+      - VITE_SIM_API=http://localhost:8100
+      - VITE_TIME_API=http://localhost:8200
+      - VITE_NF_API=http://localhost:8080
+    networks:
+      - internal
+    depends_on:
+      simulator:
+        condition: service_healthy
+
+  # --- Simulation Dashboard ---
+  sim-dashboard:
+    build:
+      context: ./sim-dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3002:80"
+    environment:
+      - VITE_SIM_API=http://localhost:8100
+      - VITE_TIME_API=http://localhost:8200
+      - VITE_NF_API=http://localhost:8080
+    networks:
+      - internal
+    depends_on:
+      simulator:
+        condition: service_healthy
+
+  # --- Tailscale (optional, activated via --profile tailscale) ---
+  tailscale:
+    image: tailscale/tailscale:latest
+    profiles: ["tailscale"]
+    network_mode: host
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTHKEY:-}
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - tailscale-state:/var/lib/tailscale
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    devices:
+      - /dev/net/tun:/dev/net/tun
+
+networks:
+  internal:

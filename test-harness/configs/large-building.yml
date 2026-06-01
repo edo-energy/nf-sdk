@@ -1,0 +1,226 @@
+building:
+  name: "Large Office Building"
+  location: "Chicago, IL"
+
+weather:
+  mode: fixed
+  fixed:
+    outdoor_air_temp: 90.0
+    humidity: 60.0
+    wind_speed: 10.0
+
+time:
+  acceleration: 10
+  start_time: null
+
+zones:
+  - name: "Floor 1 North"
+    area_sqft: 4000
+    volume_cuft: 40000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 10000
+    occupancy_schedule: business_hours
+  - name: "Floor 1 South"
+    area_sqft: 4000
+    volume_cuft: 40000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 12000
+    occupancy_schedule: business_hours
+  - name: "Floor 1 East"
+    area_sqft: 3000
+    volume_cuft: 30000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 8000
+    occupancy_schedule: business_hours
+  - name: "Floor 1 West"
+    area_sqft: 3000
+    volume_cuft: 30000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 8000
+    occupancy_schedule: business_hours
+  - name: "Floor 1 Core"
+    area_sqft: 5000
+    volume_cuft: 50000
+    r_value: 20.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 15000
+    occupancy_schedule: business_hours
+  - name: "Floor 2 North"
+    area_sqft: 4000
+    volume_cuft: 40000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 10000
+    occupancy_schedule: business_hours
+  - name: "Floor 2 South"
+    area_sqft: 4000
+    volume_cuft: 40000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 12000
+    occupancy_schedule: business_hours
+  - name: "Floor 2 East"
+    area_sqft: 3000
+    volume_cuft: 30000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 8000
+    occupancy_schedule: business_hours
+  - name: "Floor 2 West"
+    area_sqft: 3000
+    volume_cuft: 30000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 8000
+    occupancy_schedule: business_hours
+  - name: "Floor 2 Core"
+    area_sqft: 5000
+    volume_cuft: 50000
+    r_value: 20.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 15000
+    occupancy_schedule: business_hours
+
+equipment:
+  ahus:
+    - name: "AHU-1"
+      device_id: 1001
+      supply_fan_hp: 25.0
+      max_airflow_cfm: 20000
+      cooling_capacity_tons: 50.0
+      heating_capacity_mbh: 400.0
+      serves_zones: ["Floor 1 North", "Floor 1 South", "Floor 1 East", "Floor 1 West", "Floor 1 Core"]
+      economizer: true
+    - name: "AHU-2"
+      device_id: 1002
+      supply_fan_hp: 25.0
+      max_airflow_cfm: 20000
+      cooling_capacity_tons: 50.0
+      heating_capacity_mbh: 400.0
+      serves_zones: ["Floor 2 North", "Floor 2 South", "Floor 2 East", "Floor 2 West", "Floor 2 Core"]
+      economizer: true
+    - name: "AHU-3"
+      device_id: 1003
+      supply_fan_hp: 10.0
+      max_airflow_cfm: 8000
+      cooling_capacity_tons: 20.0
+      heating_capacity_mbh: 150.0
+      serves_zones: ["Floor 1 North", "Floor 1 South"]
+      economizer: true
+    - name: "AHU-4"
+      device_id: 1004
+      supply_fan_hp: 10.0
+      max_airflow_cfm: 8000
+      cooling_capacity_tons: 20.0
+      heating_capacity_mbh: 150.0
+      serves_zones: ["Floor 2 North", "Floor 2 South"]
+      economizer: true
+
+  vavs:
+    - { name: "VAV-1-01", device_id: 2001, zone: "Floor 1 North", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-02", device_id: 2002, zone: "Floor 1 North", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-03", device_id: 2003, zone: "Floor 1 South", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-04", device_id: 2004, zone: "Floor 1 South", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-05", device_id: 2005, zone: "Floor 1 East", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-06", device_id: 2006, zone: "Floor 1 East", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-07", device_id: 2007, zone: "Floor 1 West", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-08", device_id: 2008, zone: "Floor 1 West", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-09", device_id: 2009, zone: "Floor 1 Core", max_airflow_cfm: 2000, min_airflow_cfm: 400, has_reheat: true, reheat_capacity_mbh: 25.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-1-10", device_id: 2010, zone: "Floor 1 Core", max_airflow_cfm: 2000, min_airflow_cfm: 400, has_reheat: true, reheat_capacity_mbh: 25.0, parent_ahu: "AHU-1" }
+    - { name: "VAV-2-01", device_id: 2011, zone: "Floor 2 North", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-02", device_id: 2012, zone: "Floor 2 North", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-03", device_id: 2013, zone: "Floor 2 South", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-04", device_id: 2014, zone: "Floor 2 South", max_airflow_cfm: 1500, min_airflow_cfm: 300, has_reheat: true, reheat_capacity_mbh: 20.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-05", device_id: 2015, zone: "Floor 2 East", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-06", device_id: 2016, zone: "Floor 2 East", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-07", device_id: 2017, zone: "Floor 2 West", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-08", device_id: 2018, zone: "Floor 2 West", max_airflow_cfm: 1200, min_airflow_cfm: 250, has_reheat: true, reheat_capacity_mbh: 15.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-09", device_id: 2019, zone: "Floor 2 Core", max_airflow_cfm: 2000, min_airflow_cfm: 400, has_reheat: true, reheat_capacity_mbh: 25.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-2-10", device_id: 2020, zone: "Floor 2 Core", max_airflow_cfm: 2000, min_airflow_cfm: 400, has_reheat: true, reheat_capacity_mbh: 25.0, parent_ahu: "AHU-2" }
+    - { name: "VAV-3-01", device_id: 2021, zone: "Floor 1 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-3" }
+    - { name: "VAV-3-02", device_id: 2022, zone: "Floor 1 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-3" }
+    - { name: "VAV-3-03", device_id: 2023, zone: "Floor 1 South", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-3" }
+    - { name: "VAV-3-04", device_id: 2024, zone: "Floor 1 South", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-3" }
+    - { name: "VAV-3-05", device_id: 2025, zone: "Floor 1 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-3" }
+    - { name: "VAV-4-01", device_id: 2026, zone: "Floor 2 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-4" }
+    - { name: "VAV-4-02", device_id: 2027, zone: "Floor 2 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-4" }
+    - { name: "VAV-4-03", device_id: 2028, zone: "Floor 2 South", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-4" }
+    - { name: "VAV-4-04", device_id: 2029, zone: "Floor 2 South", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-4" }
+    - { name: "VAV-4-05", device_id: 2030, zone: "Floor 2 North", max_airflow_cfm: 1000, min_airflow_cfm: 200, has_reheat: true, reheat_capacity_mbh: 12.0, parent_ahu: "AHU-4" }
+
+  chillers:
+    - name: "Chiller-1"
+      device_id: 3001
+      capacity_tons: 100.0
+      min_plr: 0.2
+      design_lwt: 44.0
+      design_ewt: 54.0
+      condenser_type: air
+    - name: "Chiller-2"
+      device_id: 3002
+      capacity_tons: 100.0
+      min_plr: 0.25
+      design_lwt: 44.0
+      design_ewt: 54.0
+      condenser_type: air
+
+  boilers:
+    - name: "Boiler-1"
+      device_id: 4001
+      capacity_mbh: 1000.0
+      design_lwt: 180.0
+      efficiency: 0.92
+      fuel_type: gas
+    - name: "Boiler-2"
+      device_id: 4002
+      capacity_mbh: 1000.0
+      design_lwt: 180.0
+      efficiency: 0.90
+      fuel_type: gas
+
+  fcus: []
+  lighting:
+    - name: "LTG-Floor1"
+      device_id: 6001
+      zone: "Floor 1 Core"
+      max_watts: 8000
+      dimmable: true
+      occupancy_sensor: true
+    - name: "LTG-Floor2"
+      device_id: 6002
+      zone: "Floor 2 Core"
+      max_watts: 8000
+      dimmable: true
+      occupancy_sensor: true
+
+  sensors:
+    - { name: "OAT-Sensor", device_id: 7001, type: oat, location: "Rooftop" }
+    - { name: "Humidity-Sensor", device_id: 7002, type: humidity, location: "Rooftop" }
+    - { name: "CO2-Floor1", device_id: 7003, type: co2, location: "Floor 1 Core return" }
+    - { name: "CO2-Floor2", device_id: 7004, type: co2, location: "Floor 2 Core return" }
+    - { name: "Power-Main", device_id: 7005, type: power_meter, location: "Main panel" }
+    - { name: "Power-HVAC", device_id: 7006, type: power_meter, location: "HVAC subpanel" }

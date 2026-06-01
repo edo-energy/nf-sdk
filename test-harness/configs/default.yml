@@ -1,0 +1,209 @@
+building:
+  name: "Default Test Building"
+  location: "Chicago, IL"
+
+weather:
+  mode: fixed
+  fixed:
+    outdoor_air_temp: 85.0
+    humidity: 55.0
+    wind_speed: 8.0
+
+time:
+  acceleration: 1
+  start_time: null  # null = use current time
+
+zones:
+  - name: "Floor 1 North"
+    area_sqft: 2000
+    volume_cuft: 20000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 5000
+    occupancy_schedule: business_hours
+
+  - name: "Floor 1 South"
+    area_sqft: 2000
+    volume_cuft: 20000
+    r_value: 15.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 6000
+    occupancy_schedule: business_hours
+
+  - name: "Floor 1 East"
+    area_sqft: 1500
+    volume_cuft: 15000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 4000
+    occupancy_schedule: business_hours
+
+  - name: "Floor 1 West"
+    area_sqft: 1500
+    volume_cuft: 15000
+    r_value: 12.0
+    initial_temp: 73.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 4000
+    occupancy_schedule: business_hours
+
+  - name: "Floor 1 Core"
+    area_sqft: 3000
+    volume_cuft: 30000
+    r_value: 20.0
+    initial_temp: 72.0
+    setpoint_cooling: 74.0
+    setpoint_heating: 70.0
+    internal_load_btu: 8000
+    occupancy_schedule: business_hours
+
+equipment:
+  ahus:
+    - name: "AHU-1"
+      device_id: 1001
+      supply_fan_hp: 15.0
+      max_airflow_cfm: 10000
+      cooling_capacity_tons: 25.0
+      heating_capacity_mbh: 200.0
+      serves_zones:
+        - "Floor 1 North"
+        - "Floor 1 South"
+        - "Floor 1 East"
+        - "Floor 1 West"
+        - "Floor 1 Core"
+      economizer: true
+
+  vavs:
+    - name: "VAV-1-N"
+      device_id: 2001
+      zone: "Floor 1 North"
+      max_airflow_cfm: 1500
+      min_airflow_cfm: 300
+      has_reheat: true
+      reheat_capacity_mbh: 20.0
+      parent_ahu: "AHU-1"
+
+    - name: "VAV-1-S"
+      device_id: 2002
+      zone: "Floor 1 South"
+      max_airflow_cfm: 1500
+      min_airflow_cfm: 300
+      has_reheat: true
+      reheat_capacity_mbh: 20.0
+      parent_ahu: "AHU-1"
+
+    - name: "VAV-1-E"
+      device_id: 2003
+      zone: "Floor 1 East"
+      max_airflow_cfm: 1200
+      min_airflow_cfm: 250
+      has_reheat: true
+      reheat_capacity_mbh: 15.0
+      parent_ahu: "AHU-1"
+
+    - name: "VAV-1-W"
+      device_id: 2004
+      zone: "Floor 1 West"
+      max_airflow_cfm: 1200
+      min_airflow_cfm: 250
+      has_reheat: true
+      reheat_capacity_mbh: 15.0
+      parent_ahu: "AHU-1"
+
+    - name: "VAV-1-C"
+      device_id: 2005
+      zone: "Floor 1 Core"
+      max_airflow_cfm: 2500
+      min_airflow_cfm: 500
+      has_reheat: true
+      reheat_capacity_mbh: 30.0
+      parent_ahu: "AHU-1"
+
+  chillers:
+    - name: "Chiller-1"
+      device_id: 3001
+      capacity_tons: 50.0
+      min_plr: 0.2
+      design_lwt: 44.0
+      design_ewt: 54.0
+      condenser_type: air
+
+  boilers:
+    - name: "Boiler-1"
+      device_id: 4001
+      capacity_mbh: 500.0
+      design_lwt: 180.0
+      efficiency: 0.92
+      fuel_type: gas
+
+  fcus:
+    - name: "FCU-Lobby"
+      device_id: 5001
+      zone: "Floor 1 North"
+      capacity_cooling_mbh: 30.0
+      capacity_heating_mbh: 20.0
+      fan_speeds: 3
+
+    - name: "FCU-Conf-1"
+      device_id: 5002
+      zone: "Floor 1 South"
+      capacity_cooling_mbh: 24.0
+      capacity_heating_mbh: 18.0
+      fan_speeds: 3
+
+    - name: "FCU-Conf-2"
+      device_id: 5003
+      zone: "Floor 1 East"
+      capacity_cooling_mbh: 24.0
+      capacity_heating_mbh: 18.0
+      fan_speeds: 3
+
+    - name: "FCU-Office-1"
+      device_id: 5004
+      zone: "Floor 1 West"
+      capacity_cooling_mbh: 20.0
+      capacity_heating_mbh: 15.0
+      fan_speeds: 3
+
+    - name: "FCU-Office-2"
+      device_id: 5005
+      zone: "Floor 1 Core"
+      capacity_cooling_mbh: 36.0
+      capacity_heating_mbh: 24.0
+      fan_speeds: 3
+
+  lighting:
+    - name: "LTG-Floor1"
+      device_id: 6001
+      zone: "Floor 1 Core"
+      max_watts: 5000
+      dimmable: true
+      occupancy_sensor: true
+
+  sensors:
+    - name: "OAT-Sensor"
+      device_id: 7001
+      type: oat
+      location: "Rooftop"
+
+    - name: "Humidity-Sensor"
+      device_id: 7002
+      type: humidity
+      location: "Rooftop"
+
+    - name: "CO2-Sensor-Core"
+      device_id: 7003
+      type: co2
+      location: "Floor 1 Core return air"
+
+    - name: "Power-Meter-Main"
+      device_id: 7004
+      type: power_meter
+      location: "Main electrical panel"
